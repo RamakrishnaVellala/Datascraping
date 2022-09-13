@@ -14,17 +14,18 @@ job_titles = driver.find_elements(By.XPATH, "//a[@title]")
 job_categories=[]
 for job in job_titles:
     job_categories.append('-'.join(job.text.split()))
-
 job_urls=[]
 for i in job_categories:
     url='https://www.indeed.com/q-{}.html'.format(i)
-    driver.get(url)
-    driver.implicitly_wait(5)
+    job_urls.append(url)
 
 
-    job_titles = driver.find_elements(By.XPATH, "//span[@title]")
-    company = driver.find_elements(By.XPATH, "//a[@class='turnstileLink companyOverviewLink']")
-    location = driver.find_elements(By.XPATH, "//div[@class='companyLocation']")
+ # driver.implicitly_wait(5)
+#
+# job_titles = driver.find_elements(By.XPATH, "//span[@title]")
+# company = driver.find_elements(By.XPATH, "//a[@class='turnstileLink companyOverviewLink']")
+# location = driver.find_elements(By.XPATH, "//div[@class='companyLocation']")
+
 
 
 
