@@ -31,43 +31,47 @@ for i in job_categories:
 # jobs_count = jobs_count_str.split()[3]
 # jobs_count=int(float(jobs_count))
 # print(jobs_count)
-for i in range(0, 100, 10):
-    url = job_urls[1] + '&start=' + str(i)
-    driver.get(url)
-    jobs_data = driver.find_elements(By.CLASS_NAME, 'result')
-    for job in jobs_data:
-        result_html = job.get_attribute('innerHTML')
-        soup = Bs(result_html, "html.parser")
+jobs_list=[]
+for j in range(len(job_urls)):
+    for i in range(0, 30, 10):
+        url = job_urls[j] + '&start=' + str(i)
+        driver.get(url)
+        jobs_data = driver.find_elements(By.CLASS_NAME, 'result')
 
-        try:
-            job_title = soup.find('a', class_='jcs-JobTitle css-jspxzf eu4oa1w0').text.replace('\n', '')
-        except:
-            job_title = None
+        for job in jobs_data:
+            result_html = job.get_attribute('innerHTML')
+            soup = Bs(result_html, "html.parser")
 
-        try:
-            location = soup.find('div', class_='companyLocation').text.replace('\n', '')
-        except:
-            location = None
+            try:
+                job_title = soup.find('a', class_='jcs-JobTitle css-jspxzf eu4oa1w0').text.replace('\n', '')
+            except:
+                job_title = None
 
-        try:
-            company = soup.find('span', class_='companyName').text.replace('\n', '')
-        except:
-            company = None
-        try:
-            category = soup.find('div', class_='attribute_snippet').text.replace('\n', '')
-        except:
-            category = None
-        try:
-            Id = soup.find('a', class_='jcs-JobTitle').get('id')
-        except:
-            Id = None
-        job_dict = dict()
-        job_dict['Title'] = job_title
-        job_dict['Location'] = location
-        job_dict['Company'] = company
-        job_dict['Category'] = category
-        job_dict['Job_Id'] = Id
+            try:
+                location = soup.find('div', class_='companyLocation').text.replace('\n', '')
+            except:
+                location = None
 
-        f = open('output.json', 'w')
-        f.write(json.dumps(job_dict))
-        f.close()
+            try:
+                company = soup.find('span', class_='companyName').text.replace('\n', '')
+            except:
+                company = None
+            try:
+                category = job_categories[j]
+            except:
+                category = None
+            try:
+                Id = soup.find('a', class_='jcs-JobTitle').get('id')
+            except:
+                Id = None
+            job_dict = dict()
+            job_dict['Title'] = job_title
+            job_dict['Location'] = location
+            job_dict['Company'] = company
+            job_dict['Category'] = category
+            job_dict['Job_Id'] = Id
+            jobs_list.append(job_dict)
+print(jobs_list)
+f = open('output.json', 'w')
+f.write(json.dumps(jobs_list))
+f.close()
