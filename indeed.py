@@ -48,7 +48,7 @@ for j in range(len(job_urls)):
                 job_title = None
 
             try:
-                location = soup.find('div', class_='companyLocation').text.replace('\n', '')
+                location = soup.find('div', class_='companyLocation').text.replace(' ', '')
             except:
                 location = None
 
@@ -64,7 +64,7 @@ for j in range(len(job_urls)):
                 Id = soup.find('a', class_='jcs-JobTitle').get('id')
             except:
                 Id = None
-            job_dict = dict()
+            job_dict = {}
             job_dict['Title'] = job_title
             job_dict['Location'] = location
             job_dict['Company'] = company
@@ -72,6 +72,6 @@ for j in range(len(job_urls)):
             job_dict['Job_Id'] = Id
             jobs_list.append(job_dict)
 print(jobs_list)
-f = open('output.json', 'w')
+f = open('jobs.json', 'w')
 f.write(json.dumps(jobs_list))
 f.close()
